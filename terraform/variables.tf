@@ -1,44 +1,40 @@
-variable "aws_region" {
-  type    = string
-  default = "us-east-1"
+variable "region" {
+  description = "AWS region"
+  default     = "us-east-1"
 }
 
 variable "cluster_name" {
-  type    = string
-  default = "eks-cluster"
-}
-
-variable "aws_account_id" {
-  type = string
-}
-
-variable "ecr_repo_name" {
-  type = string
-  default = "eks-challenge-repo"
-}
-
-variable "s3_bucket_name" {
-  type = string
-  default = "ekschallengebucket123"
+  description = "EKS cluster name"
+  default     = "flask-eks-cluster"
 }
 
 variable "node_instance_type" {
-  type    = string
-  default = "t3.medium"
-}
-
-variable "desired_capacity" {
-  type    = number
-  default = 2
+  description = "Instance type for worker nodes"
+  default     = "t3.medium"
 }
 
 variable "min_size" {
-  type    = number
-  default = 1
+  description = "Minimum number of nodes"
+  default     = 1
 }
 
 variable "max_size" {
-  type    = number
-  default = 3
+  description = "Maximum number of nodes"
+  default     = 3
+}
+
+variable "desired_capacity" {
+  description = "Desired node count"
+  default     = 2
+}
+
+variable "ecr_repo_name" {
+  description = "ECR repository name"
+  default     = "flask-app"
+}
+
+variable "s3_bucket_name" {
+  description = "S3 bucket name for uploads"
+  default     = "flask-app-uploads"
 }
 
