@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment
+  namespace: flask-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask
+  template:
+    metadata:
+      labels:
+        app: flask
+    spec:
+      containers:
+        - name: flask
+          image: 804540873939.dkr.ecr.us-east-1.amazonaws.com/flask-ecr:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: S3_BUCKET
+              value: "ekschallengebucket123"
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: POSTGRES_HOST
+              value: "postgres.flask-app.svc.cluster.local"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          readinessProbe:
+            httpGet:
+              path: /up
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /up
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            failureThreshold: 3
+
